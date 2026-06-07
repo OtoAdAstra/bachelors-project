@@ -6,8 +6,9 @@ import FirebaseFirestore
 @main
 struct BankApp: App {
     
-    //MARK: - Singletones
-    
+    //MARK: - Di Implementation
+    @State private var container = DiContainer()
+
     //MARK: - Init
     init() {
         FirebaseApp.configure()
@@ -36,6 +37,7 @@ struct BankApp: App {
         WindowGroup {
             RootView()
                 .preferredColorScheme(.dark)
+                .environment(container)
         }
     }
 }
