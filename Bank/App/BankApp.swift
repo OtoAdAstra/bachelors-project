@@ -34,7 +34,7 @@ struct BankApp: App {
     //MARK: - View
     var body: some Scene {
         WindowGroup {
-            AppView()
+            RootView()
                 .preferredColorScheme(.dark)
         }
     }
