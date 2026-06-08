@@ -7,4 +7,14 @@ final class DiContainer {
     init() {
         self.authRepository = AuthRepositoryImpl()
     }
+
+    @MainActor
+    func makeAuthViewModel() -> AuthViewModel {
+        AuthViewModel(authRepository: authRepository)
+    }
+
+    @MainActor
+    func makeSignInViewModel() -> SignInViewModel {
+        SignInViewModel(authRepository: authRepository)
+    }
 }
