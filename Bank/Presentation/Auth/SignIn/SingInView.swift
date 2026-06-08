@@ -1,8 +1,10 @@
 import SwiftUI
 
 struct SignInView: View {
+    @Environment(DiContainer.self) private var container
     @State private var rememberMe = false
     @State private var showPassword = false
+    @State private var showSignUp = false
 
     @Bindable var viewModel: SignInViewModel
 
@@ -14,7 +16,7 @@ struct SignInView: View {
                 Spacer()
 
                 // Logo
-                VStack(spacing: 12) {
+                VStack(spacing: 16) {
                     Image(systemName: "lock.shield.fill")
                         .font(.system(size: 52))
                         .foregroundColor(Color(hex: "4A9EFF"))
@@ -31,7 +33,7 @@ struct SignInView: View {
                 Spacer().frame(height: 48)
 
                 // Fields
-                VStack(spacing: 18) {
+                VStack(spacing: 28) {
                     // Email
                     HStack(spacing: 12) {
                         Image(systemName: "envelope.fill")
@@ -93,7 +95,7 @@ struct SignInView: View {
                         Spacer()
 
                         Button("Create Account") {
-
+                            showSignUp = true
                         }
                             .font(.system(size: 14))
                             .foregroundColor(Color(hex: "4A9EFF"))
@@ -102,6 +104,11 @@ struct SignInView: View {
 
                     if let errorMessage = viewModel.errorMessage {
                         Text(errorMessage)
+                            .font(.system(size: 13))
+                            .foregroundColor(.red.opacity(0.9))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    } else {
+                        Text("")
                             .font(.system(size: 13))
                             .foregroundColor(.red.opacity(0.9))
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -134,6 +141,9 @@ struct SignInView: View {
                 Spacer()
             }
             .padding(.horizontal, 24)
+        }
+        .navigationDestination(isPresented: $showSignUp) {
+            SignUpView(viewModel: container.makeSignUpViewModel())
         }
     }
 }

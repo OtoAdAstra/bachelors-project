@@ -11,6 +11,13 @@ final class AuthRepositoryImpl: AuthRepository {
         try await Auth.auth().signIn(withEmail: email, password: password)
     }
 
+    func signUp(email: String, password: String, displayName: String) async throws {
+        let result = try await Auth.auth().createUser(withEmail: email, password: password)
+        let changeRequest = result.user.createProfileChangeRequest()
+        changeRequest.displayName = displayName
+        try await changeRequest.commitChanges()
+    }
+
     func signOut() throws {
         try Auth.auth().signOut()
     }

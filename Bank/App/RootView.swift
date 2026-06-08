@@ -12,8 +12,10 @@ struct RootView: View {
                     HomePlaceholderView()
                         .environment(authViewModel)
                 } else {
-                    SignInView(viewModel: container.makeSignInViewModel())
-                        .environment(authViewModel)
+                    NavigationStack {
+                        SignInView(viewModel: container.makeSignInViewModel())
+                    }
+                    .environment(authViewModel)
                 }
             } else {
                 ProgressView()
