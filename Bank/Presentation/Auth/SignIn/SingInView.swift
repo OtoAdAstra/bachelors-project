@@ -1,10 +1,10 @@
 import SwiftUI
 
 struct SignInView: View {
-    @State private var email = ""
-    @State private var password = ""
     @State private var rememberMe = false
     @State private var showPassword = false
+
+    @Bindable var viewModel: SignInViewModel
 
     var body: some View {
         ZStack {
@@ -38,7 +38,7 @@ struct SignInView: View {
                             .foregroundColor(.white.opacity(0.35))
                             .frame(width: 20)
 
-                        TextField("Email", text: $email)
+                        TextField("Email", text: $viewModel.email)
                             .keyboardType(.emailAddress)
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
@@ -59,9 +59,9 @@ struct SignInView: View {
 
                         Group {
                             if showPassword {
-                                TextField("Password", text: $password)
+                                TextField("Password", text: $viewModel.password)
                             } else {
-                                SecureField("Password", text: $password)
+                                SecureField("Password", text: $viewModel.password)
                             }
                         }
                         .textContentType(.password)
@@ -93,36 +93,47 @@ struct SignInView: View {
                         Spacer()
 
                         Button("Create Account") {
-                            
+
                         }
                             .font(.system(size: 14))
                             .foregroundColor(Color(hex: "4A9EFF"))
                     }
                     .padding(.horizontal, 4)
+
+                    if let errorMessage = viewModel.errorMessage {
+                        Text(errorMessage)
+                            .font(.system(size: 13))
+                            .foregroundColor(.red.opacity(0.9))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
 
                 Spacer().frame(height: 28)
 
                 // Sign in button
                 Button {
-                    // sign in action
+                    Task { await viewModel.signIn() }
                 } label: {
-                    Text("Sign In")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(Color(hex: "2D6FD4"))
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                    ZStack {
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .tint(.white)
+                        } else {
+                            Text("Sign In")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 52)
+                    .background(Color(hex: "2D6FD4"))
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
+                .disabled(viewModel.isLoading)
 
                 Spacer()
             }
             .padding(.horizontal, 24)
         }
     }
-}
-
-#Preview {
-    SignInView()
 }
