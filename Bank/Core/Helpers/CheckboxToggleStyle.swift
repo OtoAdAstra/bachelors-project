@@ -4,7 +4,7 @@ struct CheckboxToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack(spacing: 10) {
             ZStack {
-                RoundedRectangle(cornerRadius: 5)
+                RoundedRectangle(cornerRadius: 7)
                     .fill(configuration.isOn
                           ? Color(hex: "2D6FD4")
                           : Color.white.opacity(0.08))
