@@ -5,7 +5,7 @@ final class DiContainer {
     let authRepository: AuthRepository
 
     init() {
-        self.authRepository = AuthRepositoryImpl()
+        self.authRepository = AuthRepositoryImpl(sessionStorage: KeychainSessionStorage())
     }
 
     @MainActor

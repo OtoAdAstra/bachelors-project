@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SignInView: View {
     @Environment(DiContainer.self) private var container
-    @State private var rememberMe = false
     @State private var showPassword = false
     @State private var showSignUp = false
 
@@ -85,7 +84,7 @@ struct SignInView: View {
 
                     // Remember me
                     HStack {
-                        Toggle(isOn: $rememberMe) {
+                        Toggle(isOn: $viewModel.rememberMe) {
                             Text("Remember me")
                                 .font(.system(size: 14))
                                 .foregroundColor(.white.opacity(0.6))

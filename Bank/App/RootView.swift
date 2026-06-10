@@ -23,6 +23,7 @@ struct RootView: View {
         }
         .task {
             if authViewModel == nil {
+                await container.authRepository.restoreSessionIfNeeded()
                 authViewModel = container.makeAuthViewModel()
             }
             await authViewModel?.observeAuthState()

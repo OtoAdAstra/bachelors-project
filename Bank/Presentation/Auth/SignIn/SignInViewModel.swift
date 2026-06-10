@@ -6,6 +6,7 @@ import SwiftUI
 final class SignInViewModel {
     var email: String = ""
     var password: String = ""
+    var rememberMe: Bool = false
     var errorMessage: String?
     var isLoading: Bool = false
 
@@ -31,7 +32,7 @@ final class SignInViewModel {
         defer { isLoading = false }
 
         do {
-            try await authRepository.signIn(email: email, password: password)
+            try await authRepository.signIn(email: email, password: password, rememberMe: rememberMe)
         } catch let error as Error {
             errorMessage = error.errorDescription
         } catch {
