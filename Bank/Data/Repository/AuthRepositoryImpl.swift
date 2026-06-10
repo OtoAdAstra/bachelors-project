@@ -16,10 +16,9 @@ final class AuthRepositoryImpl: AuthRepository {
     func signIn(email: String, password: String, rememberMe: Bool) async throws {
         let result = try await Auth.auth().signIn(withEmail: email, password: password)
         if rememberMe {
-            let token = try await result.user.getIDToken()
-            try sessionStorage.save(Session(userId: result.user.uid, token: token))
+            try sessionStorage.save(Session(userId: result.user.uid))
         } else {
-            try? sessionStorage.clear()
+            try sessionStorage.clear()
         }
     }
 
@@ -28,13 +27,12 @@ final class AuthRepositoryImpl: AuthRepository {
         let changeRequest = result.user.createProfileChangeRequest()
         changeRequest.displayName = displayName
         try await changeRequest.commitChanges()
-        let token = try await result.user.getIDToken()
-        try sessionStorage.save(Session(userId: result.user.uid, token: token))
+        try sessionStorage.save(Session(userId: result.user.uid))
     }
 
     func signOut() throws {
-        try? sessionStorage.clear()
         try Auth.auth().signOut()
+        try sessionStorage.clear()
     }
 
     func authStateStream() -> AsyncStream<Bool> {
