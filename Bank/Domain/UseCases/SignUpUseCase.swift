@@ -11,18 +11,21 @@ protocol SignUpUseCase {
     ) async throws
 }
 
-/// Validates the registration form, creates the account, and persists the new session.
+/// Validates the registration form, creates the account + profile, and persists the session.
 final class DefaultSignUpUseCase: SignUpUseCase {
     private let authRepository: AuthRepository
+    private let profileRepository: ProfileRepository
     private let sessionStorage: SessionStorage
     private let validator: CredentialValidator
 
     init(
         authRepository: AuthRepository,
+        profileRepository: ProfileRepository,
         sessionStorage: SessionStorage,
         validator: CredentialValidator = CredentialValidator()
     ) {
         self.authRepository = authRepository
+        self.profileRepository = profileRepository
         self.sessionStorage = sessionStorage
         self.validator = validator
     }
@@ -48,6 +51,13 @@ final class DefaultSignUpUseCase: SignUpUseCase {
             email: email,
             password: password,
             displayName: displayName
+        )
+        try await profileRepository.createProfile(
+            uid: session.userId,
+            email: email,
+            title: title,
+            firstName: firstName,
+            lastName: lastName
         )
         try sessionStorage.save(session)
     }

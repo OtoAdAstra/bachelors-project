@@ -34,26 +34,12 @@ struct RootView: View {
         if authViewModel.isLocked {
             BiometricLockView()
         } else if authViewModel.isAuthenticated {
-            HomePlaceholderView()
+            NavigationStack {
+                BalanceView(viewModel: container.makeBalanceViewModel())
+            }
         } else {
             NavigationStack {
                 SignInView(viewModel: container.makeSignInViewModel())
-            }
-        }
-    }
-}
-
-// MARK: - Home Placeholder
-
-private struct HomePlaceholderView: View {
-    @Environment(AuthViewModel.self) private var authViewModel
-
-    var body: some View {
-        VStack(spacing: 16) {
-            Text("Signed in")
-                .font(.title)
-            Button("Sign Out") {
-                authViewModel.signOut()
             }
         }
     }
