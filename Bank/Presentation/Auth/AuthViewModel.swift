@@ -1,25 +1,70 @@
 import Foundation
-import SwiftUI
 
+/// Owns global authentication + app-lock state for the session.
 @MainActor
 @Observable
 final class AuthViewModel {
     var isAuthenticated: Bool
+    var isLocked: Bool = false
+    var biometricError: String?
 
-    private let authRepository: AuthRepository
+    var isBiometricAvailable: Bool { biometricAuth.isAvailable }
+    var biometricType: BiometricType { biometricAuth.biometricType }
 
-    init(authRepository: AuthRepository) {
-        self.authRepository = authRepository
-        self.isAuthenticated = authRepository.isAuthenticated
+    private let observeAuthState: ObserveAuthStateUseCase
+    private let signOutUseCase: SignOutUseCase
+    private let biometricAuth: AuthenticateWithBiometricsUseCase
+
+    init(
+        observeAuthState: ObserveAuthStateUseCase,
+        signOutUseCase: SignOutUseCase,
+        biometricAuth: AuthenticateWithBiometricsUseCase
+    ) {
+        self.observeAuthState = observeAuthState
+        self.signOutUseCase = signOutUseCase
+        self.biometricAuth = biometricAuth
+        self.isAuthenticated = observeAuthState.currentValue
     }
 
-    func observeAuthState() async {
-        for await authenticated in authRepository.authStateStream() {
+    func observeAuthStateChanges() async {
+        for await authenticated in observeAuthState.execute() {
             isAuthenticated = authenticated
+            // If the backend session ends (e.g. token revoked), drop the lock too.
+            if !authenticated { isLocked = false }
         }
     }
 
     func signOut() {
-        try? authRepository.signOut()
+        try? signOutUseCase.execute()
+        isLocked = false
+    }
+
+    /// Lock the app when it leaves the foreground while signed in.
+    func lockIfAuthenticated() {
+        guard isAuthenticated else { return }
+        isLocked = true
+        biometricError = nil
+    }
+
+    func unlockWithBiometrics() async {
+        biometricError = nil
+        do {
+            try await biometricAuth.execute()
+            isLocked = false
+        } catch let error as BiometricError {
+            switch error {
+            case .cancelled:
+                // Stay locked silently; the user can retry.
+                break
+            case .lockout:
+                // Biometric attempts exhausted — fall back to password.
+                biometricError = error.errorDescription
+                signOut()
+            default:
+                biometricError = error.errorDescription
+            }
+        } catch {
+            biometricError = error.localizedDescription
+        }
     }
 }
