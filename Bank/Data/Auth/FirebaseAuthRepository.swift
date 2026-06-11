@@ -1,38 +1,29 @@
 import Foundation
 import FirebaseAuth
 
-final class AuthRepositoryImpl: AuthRepository {
-
-    private let sessionStorage: SessionStorage
-
-    init(sessionStorage: SessionStorage) {
-        self.sessionStorage = sessionStorage
-    }
+/// Firebase-backed implementation of `AuthRepository`.
+/// Purely an authentication gateway — persistence and biometrics live in use cases.
+final class FirebaseAuthRepository: AuthRepository {
 
     var isAuthenticated: Bool {
         Auth.auth().currentUser != nil
     }
 
-    func signIn(email: String, password: String, rememberMe: Bool) async throws {
+    func signIn(email: String, password: String) async throws -> Session {
         let result = try await Auth.auth().signIn(withEmail: email, password: password)
-        if rememberMe {
-            try sessionStorage.save(Session(userId: result.user.uid))
-        } else {
-            try sessionStorage.clear()
-        }
+        return Session(userId: result.user.uid)
     }
 
-    func signUp(email: String, password: String, displayName: String) async throws {
+    func signUp(email: String, password: String, displayName: String) async throws -> Session {
         let result = try await Auth.auth().createUser(withEmail: email, password: password)
         let changeRequest = result.user.createProfileChangeRequest()
         changeRequest.displayName = displayName
         try await changeRequest.commitChanges()
-        try sessionStorage.save(Session(userId: result.user.uid))
+        return Session(userId: result.user.uid)
     }
 
     func signOut() throws {
         try Auth.auth().signOut()
-        try sessionStorage.clear()
     }
 
     func authStateStream() -> AsyncStream<Bool> {
@@ -43,13 +34,6 @@ final class AuthRepositoryImpl: AuthRepository {
             continuation.onTermination = { _ in
                 Auth.auth().removeStateDidChangeListener(handle)
             }
-        }
-    }
-
-    func restoreSessionIfNeeded() async {
-        guard Auth.auth().currentUser != nil else { return }
-        if sessionStorage.load() == nil {
-            try? Auth.auth().signOut()
         }
     }
 }
