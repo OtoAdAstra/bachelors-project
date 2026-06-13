@@ -57,6 +57,7 @@ struct SignUpView: View {
                             .frame(height: 52)
                             .background(Color.white.opacity(0.08))
                             .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .privacySensitive()
                         }
 
                         // First name
@@ -70,6 +71,7 @@ struct SignUpView: View {
                                 .autocorrectionDisabled()
                                 .foregroundColor(.white)
                                 .tint(Color(hex: "4A9EFF"))
+                                .privacySensitive()
                         }
                         .padding(.horizontal, 16)
                         .frame(height: 52)
@@ -87,6 +89,7 @@ struct SignUpView: View {
                                 .autocorrectionDisabled()
                                 .foregroundColor(.white)
                                 .tint(Color(hex: "4A9EFF"))
+                                .privacySensitive()
                         }
                         .padding(.horizontal, 16)
                         .frame(height: 52)
@@ -106,6 +109,7 @@ struct SignUpView: View {
                                 .textContentType(.emailAddress)
                                 .foregroundColor(.white)
                                 .tint(Color(hex: "4A9EFF"))
+                                .privacySensitive()
                         }
                         .padding(.horizontal, 16)
                         .frame(height: 52)
@@ -121,8 +125,10 @@ struct SignUpView: View {
                             Group {
                                 if showPassword {
                                     TextField("Password", text: $viewModel.password)
+                                        .privacySensitive()
                                 } else {
                                     SecureField("Password", text: $viewModel.password)
+                                        .privacySensitive()
                                 }
                             }
                             .textContentType(.newPassword)
@@ -151,8 +157,10 @@ struct SignUpView: View {
                             Group {
                                 if showRepeatPassword {
                                     TextField("Repeat password", text: $viewModel.repeatPassword)
+                                        .privacySensitive()
                                 } else {
                                     SecureField("Repeat password", text: $viewModel.repeatPassword)
+                                        .privacySensitive()
                                 }
                             }
                             .textContentType(.newPassword)

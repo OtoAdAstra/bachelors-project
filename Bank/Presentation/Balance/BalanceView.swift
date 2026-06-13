@@ -13,9 +13,12 @@ struct BalanceView: View {
                 VStack(spacing: 24) {
                     welcomeHeader
                     balanceCard
+                        .privacySensitive()
                     actionButtons
                     summaryRow
+                        .privacySensitive()
                     transactionsSection
+                        .privacySensitive()
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)

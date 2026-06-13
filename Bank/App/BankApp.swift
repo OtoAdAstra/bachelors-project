@@ -1,13 +1,13 @@
-import SwiftUI
 import FirebaseCore
+import SwiftUI
 
 @main
 struct BankApp: App {
 
     @State private var container: DiContainer
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
-        // Firebase must be configured before the DI container builds Firestore repositories.
         FirebaseApp.configure()
         _container = State(initialValue: DiContainer())
     }
@@ -17,6 +17,12 @@ struct BankApp: App {
             RootView()
                 .environment(container)
                 .preferredColorScheme(.dark)
+                .overlay {
+                    if scenePhase != .active {
+                        Color.black
+                            .ignoresSafeArea()
+                    }
+                }
         }
     }
 }
