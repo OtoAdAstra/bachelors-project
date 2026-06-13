@@ -5,6 +5,8 @@ struct RootView: View {
     @Environment(DiContainer.self) private var container
     @Environment(\.scenePhase) private var scenePhase
     @State private var authViewModel: AuthViewModel?
+    @State private var signInViewModel: SignInViewModel?
+    @State private var balanceViewModel: BalanceViewModel?
     @State private var isDeviceCompromised = false
     @State private var bypassedCompromise = false
 
@@ -24,6 +26,8 @@ struct RootView: View {
                 isDeviceCompromised = container.checkDeviceIntegrityUseCase.execute()
                 await container.restoreSessionUseCase.execute()
                 authViewModel = container.makeAuthViewModel()
+                signInViewModel = container.makeSignInViewModel()
+                balanceViewModel = container.makeBalanceViewModel()
             }
             await authViewModel?.observeAuthStateChanges()
         }
@@ -40,11 +44,15 @@ struct RootView: View {
             BiometricLockView()
         } else if authViewModel.isAuthenticated {
             NavigationStack {
-                BalanceView(viewModel: container.makeBalanceViewModel())
+                if let balanceViewModel {
+                    BalanceView(viewModel: balanceViewModel)
+                }
             }
         } else {
             NavigationStack {
-                SignInView(viewModel: container.makeSignInViewModel())
+                if let signInViewModel {
+                    SignInView(viewModel: signInViewModel)
+                }
             }
         }
     }
