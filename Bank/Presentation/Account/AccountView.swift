@@ -36,6 +36,10 @@ struct AccountView: View {
                         .padding(.vertical, 8)
 
                     logoutButton
+
+                    if let logoutError = authViewModel.errorMessage {
+                        message(logoutError, color: .red)
+                    }
                 }
                 .padding(24)
             }

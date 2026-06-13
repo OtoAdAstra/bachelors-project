@@ -7,6 +7,7 @@ final class AuthViewModel {
     var isAuthenticated: Bool
     var isLocked: Bool = false
     var biometricError: String?
+    var errorMessage: String?
 
     var isBiometricAvailable: Bool { biometricAuth.isAvailable }
     var biometricType: BiometricType { biometricAuth.biometricType }
@@ -35,8 +36,12 @@ final class AuthViewModel {
     }
 
     func signOut() {
-        try? signOutUseCase.execute()
-        isLocked = false
+        do {
+            try signOutUseCase.execute()
+            isLocked = false
+        } catch {
+            errorMessage = "Couldn't sign out. Please try again."
+        }
     }
 
     /// Lock the app when it leaves the foreground while signed in.

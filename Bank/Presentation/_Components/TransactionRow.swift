@@ -1,3 +1,5 @@
+import SwiftUI
+
 struct TransactionRow: View {
     let transaction: BankTransaction
 
