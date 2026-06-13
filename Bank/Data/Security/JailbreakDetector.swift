@@ -1,0 +1,108 @@
+import Foundation
+import MachO
+
+/// Heuristic jailbreak / tamper detector.
+///
+/// No single check is reliable on its own (any one can be defeated), so this
+/// combines several independent signals as a defense-in-depth layer:
+///  1. Presence of known jailbreak files / apps.
+///  2. Ability to write outside the app sandbox.
+///  3. System paths replaced with symbolic links.
+///  4. Known code-injection libraries loaded into the process.
+///  5. `DYLD_INSERT_LIBRARIES` set (dylib injection).
+///
+/// It is intentionally honest about its limits: a determined attacker with a
+/// detector-bypass tweak can still hide. The goal is to raise the cost, not to
+/// provide a guarantee.
+final class JailbreakDetector: DeviceIntegrityChecking {
+
+    var isDeviceCompromised: Bool {
+        if isForcedForTesting { return true }
+
+        #if targetEnvironment(simulator)
+        // The simulator isn't a real device; treat it as clean so development works.
+        return false
+        #else
+        return hasSuspiciousFiles()
+            || canWriteOutsideSandbox()
+            || hasSuspiciousSymlinks()
+            || hasInjectedLibraries()
+            || hasInjectedEnvironment()
+        #endif
+    }
+
+    /// DEBUG-only override so the blocking UI can be demonstrated without a
+    /// jailbroken device: add `-simulateJailbreak` to the scheme's launch args.
+    private var isForcedForTesting: Bool {
+        #if DEBUG
+        return ProcessInfo.processInfo.arguments.contains("-simulateJailbreak")
+        #else
+        return false
+        #endif
+    }
+
+    // MARK: - Signals
+
+    private func hasSuspiciousFiles() -> Bool {
+        let paths = [
+            "/Applications/Cydia.app",
+            "/Applications/Sileo.app",
+            "/Applications/Zebra.app",
+            "/private/var/lib/apt",
+            "/private/var/lib/cydia",
+            "/private/var/stash",
+            "/usr/sbin/sshd",
+            "/usr/bin/ssh",
+            "/bin/bash",
+            "/bin/sh",
+            "/etc/apt",
+            "/Library/MobileSubstrate/MobileSubstrate.dylib",
+            "/Library/MobileSubstrate/DynamicLibraries",
+            "/usr/lib/libsubstitute.dylib",
+            "/usr/lib/libhooker.dylib",
+            "/var/jb"
+        ]
+        let fileManager = FileManager.default
+        return paths.contains { fileManager.fileExists(atPath: $0) }
+    }
+
+    private func canWriteOutsideSandbox() -> Bool {
+        let path = "/private/" + UUID().uuidString
+        do {
+            try "integrity-probe".write(toFile: path, atomically: true, encoding: .utf8)
+            try? FileManager.default.removeItem(atPath: path)
+            return true // a sandboxed app must NOT be able to write here
+        } catch {
+            return false
+        }
+    }
+
+    private func hasSuspiciousSymlinks() -> Bool {
+        let paths = ["/Applications", "/var/stash", "/Library/Ringtones"]
+        let fileManager = FileManager.default
+        return paths.contains { path in
+            guard
+                let attributes = try? fileManager.attributesOfItem(atPath: path),
+                let type = attributes[.type] as? FileAttributeType
+            else { return false }
+            return type == .typeSymbolicLink
+        }
+    }
+
+    private func hasInjectedLibraries() -> Bool {
+        let suspicious = [
+            "substrate", "substitute", "libhooker", "tweakinject",
+            "sslkillswitch", "fridagadget", "cycript"
+        ]
+        for index in 0..<_dyld_image_count() {
+            guard let namePointer = _dyld_get_image_name(index) else { continue }
+            let name = String(cString: namePointer).lowercased()
+            if suspicious.contains(where: name.contains) { return true }
+        }
+        return false
+    }
+
+    private func hasInjectedEnvironment() -> Bool {
+        getenv("DYLD_INSERT_LIBRARIES") != nil
+    }
+}

@@ -10,6 +10,7 @@ final class DiContainer {
     private let biometricAuthenticator: BiometricAuthenticator
     private let profileRepository: ProfileRepository
     private let accountRepository: AccountRepository
+    private let deviceIntegrityChecker: DeviceIntegrityChecking
 
     // MARK: Auth use cases
     private let signInUseCase: SignInUseCase
@@ -18,6 +19,7 @@ final class DiContainer {
     private let observeAuthStateUseCase: ObserveAuthStateUseCase
     private let biometricAuthUseCase: AuthenticateWithBiometricsUseCase
     let restoreSessionUseCase: RestoreSessionUseCase
+    let checkDeviceIntegrityUseCase: CheckDeviceIntegrityUseCase
 
     // MARK: Banking use cases
     private let loadProfileUseCase: LoadProfileUseCase
@@ -33,11 +35,13 @@ final class DiContainer {
         let biometricAuthenticator = BiometricService()
         let profileRepository = FirestoreProfileRepository()
         let accountRepository = FirestoreAccountRepository()
+        let deviceIntegrityChecker = JailbreakDetector()
         self.authRepository = authRepository
         self.sessionStorage = sessionStorage
         self.biometricAuthenticator = biometricAuthenticator
         self.profileRepository = profileRepository
         self.accountRepository = accountRepository
+        self.deviceIntegrityChecker = deviceIntegrityChecker
 
         // Auth use cases
         let biometricAuthUseCase = DefaultAuthenticateWithBiometricsUseCase(
@@ -64,6 +68,9 @@ final class DiContainer {
             authRepository: authRepository,
             sessionStorage: sessionStorage,
             biometricAuth: biometricAuthUseCase
+        )
+        self.checkDeviceIntegrityUseCase = DefaultCheckDeviceIntegrityUseCase(
+            detector: deviceIntegrityChecker
         )
 
         // Banking use cases

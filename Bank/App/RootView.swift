@@ -5,10 +5,14 @@ struct RootView: View {
     @Environment(DiContainer.self) private var container
     @Environment(\.scenePhase) private var scenePhase
     @State private var authViewModel: AuthViewModel?
+    @State private var isDeviceCompromised = false
+    @State private var bypassedCompromise = false
 
     var body: some View {
         Group {
-            if let authViewModel {
+            if isDeviceCompromised && !bypassedCompromise {
+                CompromisedDeviceView(onContinueAnyway: { bypassedCompromise = true })
+            } else if let authViewModel {
                 content(for: authViewModel)
                     .environment(authViewModel)
             } else {
@@ -17,6 +21,7 @@ struct RootView: View {
         }
         .task {
             if authViewModel == nil {
+                isDeviceCompromised = container.checkDeviceIntegrityUseCase.execute()
                 await container.restoreSessionUseCase.execute()
                 authViewModel = container.makeAuthViewModel()
             }
