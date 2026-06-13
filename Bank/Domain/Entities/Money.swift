@@ -1,7 +1,5 @@
 import Foundation
 
-/// Value object representing a monetary amount, stored as integer cents
-/// to avoid floating-point rounding errors.
 struct Money: Equatable {
     let cents: Int
 
@@ -12,12 +10,18 @@ struct Money: Equatable {
     }
 
     init?(dollarsText: String) {
-        let trimmed = dollarsText.trimmingCharacters(in: .whitespaces)
-        guard let value = Decimal(string: trimmed), value >= 0 else { return nil }
+        let normalized = dollarsText
+            .trimmingCharacters(in: .whitespaces)
+            .replacingOccurrences(of: " ", with: "")
+            .replacingOccurrences(of: ",", with: ".")
+        guard
+            normalized.filter({ $0 == "." }).count <= 1,
+            let value = Decimal(string: normalized),
+            value >= 0
+        else { return nil }
         self.cents = NSDecimalNumber(decimal: value * 100).intValue
     }
 
-    /// Build from a plain dollar amount (e.g. read from Firestore).
     init(dollars: Double) {
         self.cents = Int((dollars * 100).rounded())
     }
@@ -26,7 +30,6 @@ struct Money: Equatable {
         Decimal(cents) / 100
     }
 
-    /// Plain dollar amount for persistence (e.g. writing to Firestore).
     var dollarValue: Double {
         Double(cents) / 100
     }
