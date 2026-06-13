@@ -12,6 +12,14 @@ struct BalanceView: View {
             ScrollView {
                 VStack(spacing: 24) {
                     welcomeHeader
+
+                    if let error = viewModel.errorMessage {
+                        Text(error)
+                            .font(.system(size: 13))
+                            .foregroundColor(.red.opacity(0.9))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+
                     balanceCard
                         .privacySensitive()
                     actionButtons
