@@ -3,7 +3,6 @@ import Foundation
 @Observable
 final class DiContainer {
 
-    // MARK: Data layer
     private let authRepository: AuthRepository
     private let sessionStorage: SessionStorage
     private let biometricAuthenticator: BiometricAuthenticator
@@ -11,7 +10,6 @@ final class DiContainer {
     private let accountRepository: AccountRepository
     private let deviceIntegrityChecker: DeviceIntegrityChecking
 
-    // MARK: Auth use cases
     private let signInUseCase: SignInUseCase
     private let signUpUseCase: SignUpUseCase
     private let signOutUseCase: SignOutUseCase
@@ -20,7 +18,6 @@ final class DiContainer {
     let restoreSessionUseCase: RestoreSessionUseCase
     let checkDeviceIntegrityUseCase: CheckDeviceIntegrityUseCase
 
-    // MARK: Banking use cases
     private let loadProfileUseCase: LoadProfileUseCase
     private let updateProfileUseCase: UpdateProfileUseCase
     private let observeBalanceUseCase: ObserveBalanceUseCase
@@ -28,25 +25,16 @@ final class DiContainer {
     private let transferMoneyUseCase: TransferMoneyUseCase
 
     init() {
-        // Data
-        let authRepository = FirebaseAuthRepository()
-        let sessionStorage = KeychainSessionStorage()
-        let biometricAuthenticator = BiometricService()
-        let profileRepository = FirestoreProfileRepository()
-        let accountRepository = FirestoreAccountRepository()
-        let deviceIntegrityChecker = JailbreakDetector()
-        self.authRepository = authRepository
-        self.sessionStorage = sessionStorage
-        self.biometricAuthenticator = biometricAuthenticator
-        self.profileRepository = profileRepository
-        self.accountRepository = accountRepository
-        self.deviceIntegrityChecker = deviceIntegrityChecker
+        self.authRepository = FirebaseAuthRepository()
+        self.sessionStorage = KeychainSessionStorage()
+        self.biometricAuthenticator = BiometricService()
+        self.profileRepository = FirestoreProfileRepository()
+        self.accountRepository = FirestoreAccountRepository()
+        self.deviceIntegrityChecker = JailbreakDetector()
 
-        // Auth use cases
-        let biometricAuthUseCase = DefaultAuthenticateWithBiometricsUseCase(
+        self.biometricAuthUseCase = DefaultAuthenticateWithBiometricsUseCase(
             authenticator: biometricAuthenticator
         )
-        self.biometricAuthUseCase = biometricAuthUseCase
         self.signInUseCase = DefaultSignInUseCase(
             authRepository: authRepository,
             sessionStorage: sessionStorage
@@ -72,15 +60,12 @@ final class DiContainer {
             detector: deviceIntegrityChecker
         )
 
-        // Banking use cases
         self.loadProfileUseCase = DefaultLoadProfileUseCase(profileRepository: profileRepository)
         self.updateProfileUseCase = DefaultUpdateProfileUseCase(profileRepository: profileRepository)
         self.observeBalanceUseCase = DefaultObserveBalanceUseCase(accountRepository: accountRepository)
         self.observeTransactionsUseCase = DefaultObserveTransactionsUseCase(accountRepository: accountRepository)
         self.transferMoneyUseCase = DefaultTransferMoneyUseCase(accountRepository: accountRepository)
     }
-
-    // MARK: View model factories
 
     @MainActor
     func makeAuthViewModel() -> AuthViewModel {

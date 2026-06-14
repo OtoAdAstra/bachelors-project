@@ -20,7 +20,6 @@ final class JailbreakDetector: DeviceIntegrityChecking {
         if isForcedForTesting { return true }
 
         #if targetEnvironment(simulator)
-        // The simulator isn't a real device; treat it as clean so development works.
         return false
         #else
         return hasSuspiciousFiles()
@@ -31,8 +30,6 @@ final class JailbreakDetector: DeviceIntegrityChecking {
         #endif
     }
 
-    /// DEBUG-only override so the blocking UI can be demonstrated without a
-    /// jailbroken device: add `-simulateJailbreak` to the scheme's launch args.
     private var isForcedForTesting: Bool {
         #if DEBUG
         return ProcessInfo.processInfo.arguments.contains("-simulateJailbreak")

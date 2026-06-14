@@ -1,7 +1,5 @@
 import Foundation
 
-/// Stateless input validation for authentication forms.
-/// Throws `AuthError` so use cases and view models share one error vocabulary.
 struct CredentialValidator {
 
     private static let minPasswordLength = 6
@@ -27,8 +25,6 @@ struct CredentialValidator {
         guard password.count >= Self.minPasswordLength else { throw AuthError.weakPassword }
         guard password == repeatPassword else { throw AuthError.passwordMismatch }
     }
-
-    // MARK: - Field rules
 
     private func requireEmail(_ email: String) throws {
         guard !isBlank(email) else { throw AuthError.emptyEmail }

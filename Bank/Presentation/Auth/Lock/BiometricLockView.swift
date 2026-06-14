@@ -1,6 +1,5 @@
 import SwiftUI
 
-/// Shown when the app is locked and awaiting biometric verification.
 struct BiometricLockView: View {
     @Environment(AuthViewModel.self) private var authViewModel
 

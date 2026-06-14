@@ -20,7 +20,6 @@ struct SignInView: View {
                 VStack(spacing: 0) {
                     Spacer().frame(height: 80)
 
-                    // Logo
                     VStack(spacing: 16) {
                         Image(systemName: "lock.shield.fill")
                             .font(.system(size: 52))
@@ -37,9 +36,7 @@ struct SignInView: View {
 
                     Spacer().frame(height: 48)
 
-                    // Fields
                     VStack(spacing: 28) {
-                        // Email
                         HStack(spacing: 12) {
                             Image(systemName: "envelope.fill")
                                 .foregroundColor(.white.opacity(0.35))
@@ -61,7 +58,6 @@ struct SignInView: View {
                         .background(Color.white.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        // Password
                         HStack(spacing: 12) {
                             Image(systemName: "lock.fill")
                                 .foregroundColor(.white.opacity(0.35))
@@ -97,7 +93,6 @@ struct SignInView: View {
                         .background(Color.white.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        // Remember me
                         HStack {
                             Toggle(isOn: $viewModel.rememberMe) {
                                 Text("Remember me")
@@ -131,7 +126,6 @@ struct SignInView: View {
 
                     Spacer().frame(height: 28)
 
-                    // Sign in button
                     Button {
                         Task { await viewModel.signIn() }
                     } label: {

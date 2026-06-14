@@ -1,7 +1,5 @@
 import Foundation
 
-/// A single ledger entry in the user's account.
-/// Named `BankTransaction` to avoid colliding with `FirebaseFirestore.Transaction`.
 struct BankTransaction: Identifiable, Equatable {
     enum Kind {
         case income

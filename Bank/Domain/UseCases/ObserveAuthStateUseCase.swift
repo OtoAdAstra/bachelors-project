@@ -1,7 +1,6 @@
 import Foundation
 
 protocol ObserveAuthStateUseCase {
-    /// Synchronous snapshot, used to seed UI before the stream starts (avoids a flash).
     var currentValue: Bool { get }
     func execute() -> AsyncStream<Bool>
 }

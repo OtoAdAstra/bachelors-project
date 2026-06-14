@@ -30,7 +30,6 @@ final class AuthViewModel {
     func observeAuthStateChanges() async {
         for await authenticated in observeAuthState.execute() {
             isAuthenticated = authenticated
-            // If the backend session ends (e.g. token revoked), drop the lock too.
             if !authenticated { isLocked = false }
         }
     }
@@ -44,7 +43,6 @@ final class AuthViewModel {
         }
     }
 
-    /// Lock the app when it leaves the foreground while signed in.
     func lockIfAuthenticated() {
         guard isAuthenticated else { return }
         isLocked = true
@@ -59,10 +57,8 @@ final class AuthViewModel {
         } catch let error as BiometricError {
             switch error {
             case .cancelled:
-                // Stay locked silently; the user can retry.
                 break
             case .lockout:
-                // Biometric attempts exhausted — fall back to password.
                 biometricError = error.errorDescription
                 signOut()
             default:

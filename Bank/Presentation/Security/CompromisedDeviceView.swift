@@ -1,9 +1,6 @@
 import SwiftUI
 
-/// Full-screen block shown when the device looks jailbroken / tampered with.
-/// There is no way forward in release builds — this is a hard stop.
 struct CompromisedDeviceView: View {
-    /// DEBUG-only escape hatch so development can continue past the block.
     var onContinueAnyway: (() -> Void)?
 
     var body: some View {

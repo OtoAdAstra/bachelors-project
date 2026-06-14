@@ -14,7 +14,6 @@ struct SignUpView: View {
                 VStack(spacing: 0) {
                     Spacer().frame(height: 24)
 
-                    // Logo
                     VStack(spacing: 16) {
                         Image(systemName: "person.crop.circle.badge.plus")
                             .font(.system(size: 52))
@@ -31,9 +30,7 @@ struct SignUpView: View {
 
                     Spacer().frame(height: 36)
 
-                    // Fields
                     VStack(spacing: 20) {
-                        // Title
                         Menu {
                             ForEach(SignUpViewModel.titles, id: \.self) { title in
                                 Button(title) { viewModel.title = title }
@@ -59,7 +56,6 @@ struct SignUpView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
 
-                        // First name
                         HStack(spacing: 12) {
                             Image(systemName: "person.fill")
                                 .foregroundColor(.white.opacity(0.35))
@@ -76,7 +72,6 @@ struct SignUpView: View {
                         .background(Color.white.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        // Last name
                         HStack(spacing: 12) {
                             Image(systemName: "person.fill")
                                 .foregroundColor(.white.opacity(0.35))
@@ -93,7 +88,6 @@ struct SignUpView: View {
                         .background(Color.white.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        // Email
                         HStack(spacing: 12) {
                             Image(systemName: "envelope.fill")
                                 .foregroundColor(.white.opacity(0.35))
@@ -112,7 +106,6 @@ struct SignUpView: View {
                         .background(Color.white.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        // Password
                         HStack(spacing: 12) {
                             Image(systemName: "lock.fill")
                                 .foregroundColor(.white.opacity(0.35))
@@ -142,7 +135,6 @@ struct SignUpView: View {
                         .background(Color.white.opacity(0.08))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
-                        // Repeat password
                         HStack(spacing: 12) {
                             Image(systemName: "lock.rotation")
                                 .foregroundColor(.white.opacity(0.35))
@@ -187,7 +179,6 @@ struct SignUpView: View {
 
                     Spacer().frame(height: 24)
 
-                    // Sign up button
                     Button {
                         Task { await viewModel.signUp() }
                     } label: {

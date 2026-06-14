@@ -1,7 +1,6 @@
 import Foundation
 
 protocol CheckDeviceIntegrityUseCase {
-    /// `true` if the app should refuse to run (device looks compromised).
     func execute() -> Bool
 }
 

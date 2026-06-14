@@ -1,8 +1,6 @@
 import Foundation
 import FirebaseFirestore
 
-/// Firestore document at `users/{uid}`.
-/// `balance` is stored in plain dollars (so a value of 10000 means $10,000.00).
 struct UserProfileDTO: Codable {
     @DocumentID var id: String?
     var email: String
@@ -17,8 +15,6 @@ struct UserProfileDTO: Codable {
     }
 }
 
-/// Firestore document at `users/{uid}/transactions/{txId}`.
-/// `amount` is stored in plain dollars.
 struct TransactionDTO: Codable {
     @DocumentID var id: String?
     var type: String

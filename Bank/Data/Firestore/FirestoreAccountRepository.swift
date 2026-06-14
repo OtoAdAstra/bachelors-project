@@ -7,8 +7,6 @@ final class FirestoreAccountRepository: AccountRepository {
     private let db = Firestore.firestore()
     private var users: CollectionReference { db.collection("users") }
 
-    // MARK: - Live reads
-
     func balanceStream() -> AsyncStream<Money> {
         AsyncStream { continuation in
             guard let uid = Auth.auth().currentUser?.uid else {
@@ -40,8 +38,6 @@ final class FirestoreAccountRepository: AccountRepository {
             continuation.onTermination = { _ in listener.remove() }
         }
     }
-
-    // MARK: - Transfer
 
     func transfer(amount: Money, toEmail: String) async throws {
         guard let sender = Auth.auth().currentUser else { throw BankingError.notAuthenticated }

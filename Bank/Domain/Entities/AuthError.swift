@@ -1,7 +1,5 @@
 import Foundation
 
-/// Domain-level errors surfaced to the presentation layer.
-/// Named `AuthError` (not `Error`) to avoid shadowing `Swift.Error`.
 enum AuthError: LocalizedError {
     case emptyEmail
     case emptyPassword

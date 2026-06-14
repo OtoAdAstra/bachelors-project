@@ -4,7 +4,6 @@ protocol SignInUseCase {
     func execute(email: String, password: String, rememberMe: Bool) async throws
 }
 
-/// Validates credentials, signs in, and persists the session only when "remember me" is on.
 final class DefaultSignInUseCase: SignInUseCase {
     private let authRepository: AuthRepository
     private let sessionStorage: SessionStorage

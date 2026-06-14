@@ -11,7 +11,6 @@ protocol SignUpUseCase {
     ) async throws
 }
 
-/// Validates the registration form, creates the account + profile, and persists the session.
 final class DefaultSignUpUseCase: SignUpUseCase {
     private let authRepository: AuthRepository
     private let profileRepository: ProfileRepository

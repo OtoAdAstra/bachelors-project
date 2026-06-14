@@ -6,7 +6,6 @@ protocol AuthenticateWithBiometricsUseCase {
     func execute() async throws
 }
 
-/// Wraps the biometric authenticator with the app's standard prompt reason.
 final class DefaultAuthenticateWithBiometricsUseCase: AuthenticateWithBiometricsUseCase {
     private static let reason = "Verify your identity to access SecureBank"
 

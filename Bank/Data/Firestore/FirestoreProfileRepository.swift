@@ -35,14 +35,12 @@ final class FirestoreProfileRepository: ProfileRepository {
         let ref = users.document(user.uid)
         let snapshot = try await ref.getDocument()
 
-        // Existing document: read defensively and NEVER touch `balance`.
         if snapshot.exists, let data = snapshot.data() {
             var title = data["title"] as? String ?? ""
             var first = data["firstName"] as? String ?? ""
             var last = data["lastName"] as? String ?? ""
             let email = (data["email"] as? String) ?? (user.email ?? "").lowercased()
 
-            // Backfill only the name fields if they're missing — no balance write.
             if first.isEmpty && last.isEmpty {
                 let parsed = Self.split(user.displayName ?? "")
                 title = parsed.title
@@ -60,7 +58,6 @@ final class FirestoreProfileRepository: ProfileRepository {
             return UserProfile(uid: user.uid, email: email, title: title, firstName: first, lastName: last)
         }
 
-        // Document truly doesn't exist — create a fresh account with zero balance.
         let (title, first, last) = Self.split(user.displayName ?? "")
         let email = (user.email ?? "").lowercased()
         try await createProfile(uid: user.uid, email: email, title: title, firstName: first, lastName: last)
@@ -85,7 +82,6 @@ final class FirestoreProfileRepository: ProfileRepository {
         try await change.commitChanges()
     }
 
-    /// Splits an auth display name like "Mr Oto Sharvashidze" into its parts.
     private static func split(_ displayName: String) -> (title: String, first: String, last: String) {
         var parts = displayName.split(separator: " ").map(String.init)
         var title = ""
