@@ -21,12 +21,9 @@ struct BalanceView: View {
                     }
 
                     balanceCard
-                        .privacySensitive()
                     actionButtons
                     summaryRow
-                        .privacySensitive()
                     transactionsSection
-                        .privacySensitive()
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)

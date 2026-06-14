@@ -1,8 +1,6 @@
 import Foundation
 import FirebaseAuth
 
-/// Firebase-backed implementation of `AuthRepository`.
-/// Purely an authentication gateway — persistence and biometrics live in use cases.
 final class FirebaseAuthRepository: AuthRepository {
 
     var isAuthenticated: Bool {

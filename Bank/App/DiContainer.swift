@@ -1,6 +1,5 @@
 import Foundation
 
-/// Composition root. Builds the dependency graph: Data → Use Cases → View Models.
 @Observable
 final class DiContainer {
 

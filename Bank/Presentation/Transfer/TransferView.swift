@@ -19,13 +19,11 @@ struct TransferView: View {
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled()
                                 .textContentType(.emailAddress)
-                                .privacySensitive()
                         }
 
                         field(icon: "dollarsign.circle.fill", placeholder: "Amount") {
                             TextField("", text: $viewModel.amount)
                                 .keyboardType(.decimalPad)
-                                .privacySensitive()
                         }
 
                         if let error = viewModel.errorMessage {

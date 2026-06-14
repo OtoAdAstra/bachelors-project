@@ -1,7 +1,5 @@
 import LocalAuthentication
 
-/// `BiometricAuthenticator` implemented with LocalAuthentication (Face ID / Touch ID).
-/// A fresh `LAContext` is created per call, as Apple recommends.
 final class BiometricService: BiometricAuthenticator {
 
     var biometricType: BiometricType {

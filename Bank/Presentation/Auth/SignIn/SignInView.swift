@@ -55,7 +55,6 @@ struct SignInView: View {
                                 .onSubmit { focusedField = .password }
                                 .foregroundColor(.white)
                                 .tint(Color(hex: "4A9EFF"))
-                                .privacySensitive()
                         }
                         .padding(.horizontal, 16)
                         .frame(height: 52)
@@ -71,10 +70,8 @@ struct SignInView: View {
                             Group {
                                 if showPassword {
                                     TextField("Password", text: $viewModel.password)
-                                        .privacySensitive()
                                 } else {
                                     SecureField("Password", text: $viewModel.password)
-                                        .privacySensitive()
                                 }
                             }
                             .textContentType(.password)

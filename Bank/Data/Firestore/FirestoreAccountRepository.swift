@@ -46,7 +46,6 @@ final class FirestoreAccountRepository: AccountRepository {
     func transfer(amount: Money, toEmail: String) async throws {
         guard let sender = Auth.auth().currentUser else { throw BankingError.notAuthenticated }
 
-        // Resolve the recipient by email (requires their profile to exist).
         let matches = try await users.whereField("email", isEqualTo: toEmail).limit(to: 1).getDocuments()
         guard let recipientDoc = matches.documents.first else { throw BankingError.recipientNotFound }
         let recipientUid = recipientDoc.documentID
@@ -114,7 +113,6 @@ final class FirestoreAccountRepository: AccountRepository {
         }
     }
 
-    /// Reads a Firestore numeric `balance` field (dollars) as integer cents.
     private static func cents(from value: Any?) -> Int {
         guard let number = value as? NSNumber else { return 0 }
         return Int((number.doubleValue * 100).rounded())
