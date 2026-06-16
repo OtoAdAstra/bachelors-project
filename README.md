@@ -5,8 +5,8 @@
   <img src="https://img.shields.io/badge/Xcode-26%2B-007ACC" />
   <img src="https://img.shields.io/badge/UIKit%20%2B%20SwiftUI-purple" />
   <img src="https://img.shields.io/badge/CLEAN%20Architecture-white" />
-  <img src="https://img.shields.io/badge/MVVM%20+%20Coordinator%20+%20Di%20Container-success" />
-  <img src="https://img.shields.io/badge/Combine%20+%20URLSession%20%2B%20Async%2FAwait-red" />
+  <img src="https://img.shields.io/badge/MVVM%20+%20Di%20Container-success" />
+  <img src="https://img.shields.io/badge/Async%2FAwait-red" />
 
 </div>
 
@@ -65,20 +65,26 @@ SecureBank არის საბანკო აპლიკაცია, რ�
 
 ## არქიტექტურა 
 
-Built using MVVM + Coordinator pattern + DI, enabling modular features, testable view models, and decoupled navigation.
+- **Clean Architecture** - პროექტის არქიტექტურა, რომელიც ყოფს აპლიკაციას Presentation, Domain და Data ლეიერებად
+- **MVVM** - Presentation layer-ში გამოყენებული პატერნი, სადაც ViewModel აკავშირებს View-ს use case-ებთან.
+- **Dependency Injection** - გამოიყენება service/use case/view model-ის ერთმანეთთან დამოკიდებულებისთვის და ტესტირებადობის გასაუმჯობესებლად
 
 ## მოთხოვნა
 
-- **Deployment Target** - iOS 26
-- **Xcode Version** - 26
+- **Deployment Target** - iOS 26+
+- **Xcode Version** - 26+
 - **Device** - iOS only
-- **Internet Connection** - Required for once per a day for currency exchange  
+- **Internet Connection** - Required 
 
 ## ინსტალაცია
 
 1. Clone the repository
 2. Open the project in Xcode
 3. Build and run (⌘ + R)
+
+**!IMPORTANT**
+Jailbreak - ის გასატესტად:
+Product > Scheme > Edit Scheme > Arguments > Arguments passed on launch > + > type "-simulateJailbreak" > Run the app
 
 ## ავტორი
 
