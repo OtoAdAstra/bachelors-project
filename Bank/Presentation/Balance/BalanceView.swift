@@ -48,8 +48,6 @@ struct BalanceView: View {
         .task { await viewModel.observeTransactions() }
     }
 
-    // MARK: - Header
-
     private var welcomeHeader: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("Welcome")
@@ -70,8 +68,6 @@ struct BalanceView: View {
             .background(Color(hex: "2D6FD4"))
             .clipShape(Circle())
     }
-
-    // MARK: - Balance card
 
     private var balanceCard: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -95,15 +91,16 @@ struct BalanceView: View {
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 
-    // MARK: - Actions
-
     private var actionButtons: some View {
         HStack(spacing: 12) {
             Button {
-                withAnimation(.easeInOut(duration: 0.2)) { viewModel.toggleBalanceHidden() }
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    viewModel.toggleBalanceHidden()
+                }
             } label: {
                 actionLabel(
-                    icon: viewModel.isBalanceHidden ? "eye.fill" : "eye.slash.fill",
+                    icon: viewModel.isBalanceHidden
+                        ? "eye.fill" : "eye.slash.fill",
                     title: viewModel.isBalanceHidden ? "Show" : "Hide"
                 )
             }
@@ -128,16 +125,29 @@ struct BalanceView: View {
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
-    // MARK: - Income / Outcome summary
-
     private var summaryRow: some View {
         HStack(spacing: 12) {
-            summaryCard(title: "Income", amount: viewModel.totalIncome, color: Color.green, icon: "arrow.down.left")
-            summaryCard(title: "Outcome", amount: viewModel.totalOutcome, color: Color.red, icon: "arrow.up.right")
+            summaryCard(
+                title: "Income",
+                amount: viewModel.totalIncome,
+                color: Color.green,
+                icon: "arrow.down.left"
+            )
+            summaryCard(
+                title: "Outcome",
+                amount: viewModel.totalOutcome,
+                color: Color.red,
+                icon: "arrow.up.right"
+            )
         }
     }
 
-    private func summaryCard(title: String, amount: Money, color: Color, icon: String) -> some View {
+    private func summaryCard(
+        title: String,
+        amount: Money,
+        color: Color,
+        icon: String
+    ) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(spacing: 6) {
                 Image(systemName: icon)
@@ -156,8 +166,6 @@ struct BalanceView: View {
         .background(Color.white.opacity(0.06))
         .clipShape(RoundedRectangle(cornerRadius: 14))
     }
-
-    // MARK: - Transactions
 
     private var transactionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {

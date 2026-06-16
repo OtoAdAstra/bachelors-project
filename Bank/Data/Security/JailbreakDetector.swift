@@ -25,8 +25,6 @@ final class JailbreakDetector: DeviceIntegrityChecking {
         #endif
     }
 
-    // MARK: - Signals
-
     private func hasSuspiciousFiles() -> Bool {
         let paths = [
             "/Applications/Cydia.app",
@@ -55,7 +53,7 @@ final class JailbreakDetector: DeviceIntegrityChecking {
         do {
             try "integrity-probe".write(toFile: path, atomically: true, encoding: .utf8)
             try? FileManager.default.removeItem(atPath: path)
-            return true // a sandboxed app must NOT be able to write here
+            return true
         } catch {
             return false
         }

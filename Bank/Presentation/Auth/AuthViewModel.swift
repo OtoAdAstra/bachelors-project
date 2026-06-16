@@ -1,6 +1,5 @@
 import Foundation
 
-/// Owns global authentication + app-lock state for the session.
 @MainActor
 @Observable
 final class AuthViewModel {
