@@ -82,9 +82,10 @@ SecureBank არის საბანკო აპლიკაცია, რ�
 2. Open the project in Xcode
 3. Build and run (⌘ + R)
 
-**!IMPORTANT**
-Jailbreak - ის გასატესტად:
-Product > Scheme > Edit Scheme > Arguments > Arguments passed on launch > + > type "-simulateJailbreak" > Run the app
+
+## Jailbreak - ის გასატესტად:
+
+Product > Scheme > Edit Scheme > Arguments > Arguments passed on launch > + > "-simulateJailbreak" > Build and run (⌘ + R)
 
 ## ავტორი
 
