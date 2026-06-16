@@ -1,19 +1,6 @@
 import Foundation
 import MachO
 
-/// Heuristic jailbreak / tamper detector.
-///
-/// No single check is reliable on its own (any one can be defeated), so this
-/// combines several independent signals as a defense-in-depth layer:
-///  1. Presence of known jailbreak files / apps.
-///  2. Ability to write outside the app sandbox.
-///  3. System paths replaced with symbolic links.
-///  4. Known code-injection libraries loaded into the process.
-///  5. `DYLD_INSERT_LIBRARIES` set (dylib injection).
-///
-/// It is intentionally honest about its limits: a determined attacker with a
-/// detector-bypass tweak can still hide. The goal is to raise the cost, not to
-/// provide a guarantee.
 final class JailbreakDetector: DeviceIntegrityChecking {
 
     var isDeviceCompromised: Bool {
