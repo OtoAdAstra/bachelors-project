@@ -83,7 +83,7 @@ SecureBank არის საბანკო აპლიკაცია, რ�
 3. Build and run (⌘ + R)
 
 
-## Jailbreak - ის გასატესტად:
+#### Jailbreak - ის გასატესტად:
 
 Product > Scheme > Edit Scheme > Arguments > Arguments passed on launch > + > "-simulateJailbreak" > Build and run (⌘ + R)
 
