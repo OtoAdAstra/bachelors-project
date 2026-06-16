@@ -4,33 +4,32 @@
   <img src="https://img.shields.io/badge/Swift-6.1%2B-orange" />
   <img src="https://img.shields.io/badge/Xcode-26%2B-007ACC" />
   <img src="https://img.shields.io/badge/UIKit%20%2B%20SwiftUI-purple" />
+  <img src="https://img.shields.io/badge/CLEAN%20Architecture-white" />
   <img src="https://img.shields.io/badge/MVVM%20+%20Coordinator%20+%20Di%20Container-success" />
   <img src="https://img.shields.io/badge/Combine%20+%20URLSession%20%2B%20Async%2FAwait-red" />
-  <img src="https://img.shields.io/badge/Apple%20Intelligence-white" />
 
 </div>
 
 
 
-# CashApp
+# SecureBank
 
 ## About 
 
-Cashpad is a modern personal finance app designed to help you understand your money without overwhelming you. Track accounts, monitor income and expenses, and see your financial picture clearly - all in one beautifully crafted experience. <br>
-Built with a clean, minimal interface and smooth animations, Cashpad makes managing money feel natural, fast, and even satisfying.
+SecureBank არის საბანკო აპლიკაცია, რომელიც იყენებს ყველა უსაფრთხოების ზომას, რაც შეიძლება FinTech აპლიკაციას დასჭირდეს. მოცემული პროექტი იქნება ჩონჩხი და გზამკვლები iOS დეველოპერებისთვის, რათა უკეთ გაიგონ და გამოიყენონ პროექტში მოცემული ტექნიკები. პროექტის მიზანია მაქსიმალურად გაუმარტივოს დეველოპერებს უსაფრთხოების ნორმების მიღება iOS აპლიკაციის მხრიდან.
 
 ## Target Audience
 
-- People who earn their own money and want control over it
-- Budget-Aware Individuals
-- Users building financial discipline early
+- FinTech კომპანიები, რომლებსაც სურთ მაქსიმალური უსაფრთხოების ზომის მიღება iOS-ის მხრიდან
+- სტარტაპები, რომლებსაც სჭირდებათ ფრეიმვორკი, რომელზეც ააწყობენ თავიანთ აპლიკაციას
+- iOS დეველოპერები, რომლებსაც სურთ უსაფრთხოების ზომების და ოპტიმალური პრაქტიკების მარტივად ათვისება
 
-## Features
+## DEFENSE TECHNIQUES
 
-- **Account Management** - Create and manage multiple accounts
-- **Income & Expense Tracking** - Add income and expense transactions quickly
-- **Smart Balance Overview** - Always see your current balance at a glance
-- **Visual Analytics** - Clean, readable charts designed for clarity
+- **Jailbreak Detector** - არ აძლევს jailbroken დევაისებს აპლიკაციაზე წვდომას
+- **Keychain Service** - სენსიტიური მონაცემების დაშიფრულად შენახვა
+- **Local Authentication** - მომხმარებლის ხელახალი ავთენტიფიკაცია Face ID-ის გამოყენებით
+- **Screen Privacy** - ეკრანზე ნაჩვენები სენსიტიური ინფორმაციის დაცვა
 
 ## Screenshots
 
