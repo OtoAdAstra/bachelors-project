@@ -51,12 +51,6 @@
             ReferencedContainer = "container:Bank.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <CommandLineArguments>
-         <CommandLineArgument
-            argument = "-simulateJailbreak"
-            isEnabled = "YES">
-         </CommandLineArgument>
-      </CommandLineArguments>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
